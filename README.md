@@ -2,6 +2,25 @@
 
 A Model Context Protocol (MCP) server that integrates Codex CLI, GitHub Copilot CLI, and Claude CLI with Claude Code for AI-powered code reviews and feedback.
 
+## ⚠️ IMPORTANT SAFETY WARNING
+
+**USE AT YOUR OWN RISK** - This tool provides AI models with direct access to execute commands on your system through CLI tools. The AI models may:
+
+- **Execute potentially dangerous commands** if given inappropriate permissions
+- **Modify, delete, or create files** in your filesystem 
+- **Make network requests** or interact with external services
+- **Install software** or modify system configurations
+- **Access sensitive data** in your project directories
+
+### Safety Recommendations
+
+🔒 **Always run in isolated environments** (Docker containers, VMs, or sandboxed systems)  
+🔒 **Never use on production systems** or systems with sensitive data  
+🔒 **Review all generated commands** before execution when possible  
+🔒 **Use restrictive permission modes** and directory limitations  
+🔒 **Monitor AI outputs carefully** for unexpected or dangerous behavior  
+🔒 **Keep backups** of important work before using AI assistance tools
+
 ## Features
 
 - Execute Codex CLI commands through MCP
@@ -20,6 +39,8 @@ A Model Context Protocol (MCP) server that integrates Codex CLI, GitHub Copilot 
 - [GitHub Copilot CLI](https://github.com/github/gh-copilot) installed and in PATH
 - [Claude CLI](https://claude.ai/code) installed and in PATH
 - Claude Desktop or compatible MCP client
+
+**⚠️ Note**: Each CLI tool has its own authentication requirements and safety considerations. Ensure you understand the permissions and capabilities of each tool before use.
 
 ## Installation
 
@@ -161,6 +182,16 @@ Run the server directly:
 ```bash
 python3 server.py
 ```
+
+## Disclaimer
+
+This software is provided "as is" without warranty of any kind. The authors and contributors are not responsible for any damage, data loss, security breaches, or other issues that may arise from using this tool. Users assume all responsibility for the actions performed by AI models through this MCP server.
+
+By using this software, you acknowledge that:
+- AI models can execute commands and modify files on your system
+- You understand the risks associated with giving AI tools system access  
+- You will take appropriate precautions to protect your data and systems
+- You will not hold the authors liable for any consequences of AI actions
 
 ## License
 
