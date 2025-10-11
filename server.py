@@ -272,6 +272,9 @@ async def handle_codex(arguments: dict) -> list[TextContent]:
 
 
 async def handle_copilot(arguments: dict) -> list[TextContent]:
+    import os
+    import traceback
+
     prompt = arguments.get("prompt")
     if not prompt:
         raise ValueError("prompt is required")
@@ -304,6 +307,17 @@ async def handle_copilot(arguments: dict) -> list[TextContent]:
     if arguments.get("no_color", False):
         cmd.append("--no-color")
 
+    # Build debug info to return to caller
+    debug_info = f"""**Debug Info**
+
+Command: {' '.join(cmd)}
+Working directory: {os.getcwd()}
+PATH: {os.environ.get('PATH', 'NOT SET')}
+Arguments: {json.dumps(arguments, indent=2)}
+
+---
+"""
+
     try:
         result = subprocess.run(
             cmd,
@@ -312,12 +326,20 @@ async def handle_copilot(arguments: dict) -> list[TextContent]:
             timeout=300
         )
 
+        debug_info += f"""
+Subprocess completed:
+- Return code: {result.returncode}
+- stdout length: {len(result.stdout) if result.stdout else 0}
+- stderr length: {len(result.stderr) if result.stderr else 0}
+
+"""
+
         output = result.stdout if result.stdout else result.stderr
 
         if result.returncode != 0:
             return [TextContent(
                 type="text",
-                text=f"GitHub Copilot command failed with exit code {result.returncode}:\n{output}"
+                text=f"{debug_info}GitHub Copilot command failed with exit code {result.returncode}:\n\n{output}"
             )]
 
         response_header = f"**Response from GitHub Copilot**\n\n"
@@ -330,17 +352,17 @@ async def handle_copilot(arguments: dict) -> list[TextContent]:
     except subprocess.TimeoutExpired:
         return [TextContent(
             type="text",
-            text="GitHub Copilot command timed out after 5 minutes"
+            text=f"{debug_info}GitHub Copilot command timed out after 5 minutes"
         )]
-    except FileNotFoundError:
+    except FileNotFoundError as e:
         return [TextContent(
             type="text",
-            text="Error: copilot command not found. Please ensure GitHub Copilot CLI is installed and in PATH."
+            text=f"{debug_info}Error: copilot command not found. Please ensure GitHub Copilot CLI is installed and in PATH.\n\nDetails: {str(e)}"
         )]
     except Exception as e:
         return [TextContent(
             type="text",
-            text=f"Error executing GitHub Copilot: {str(e)}"
+            text=f"{debug_info}Error executing GitHub Copilot: {str(e)}\n\nException type: {type(e).__name__}\n\nTraceback:\n{traceback.format_exc()}"
         )]
 
 
