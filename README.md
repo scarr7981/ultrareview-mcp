@@ -42,6 +42,11 @@ This is an experimental space for exploring the future of human-AI collaborative
 - Auto-approval and quiet modes
 - Advanced tool permission management
 - Integration with Claude Code
+- **Comprehensive logging and debugging**
+  - File-based logging to `logs/` directory (daily rotation)
+  - Verbose debug mode for troubleshooting
+  - Uniform logging across all CLI handlers
+  - Request/response tracking with timestamps
 
 ## Prerequisites
 
@@ -121,6 +126,7 @@ The MCP server will execute the appropriate CLI command and return the results.
 - **output_schema** (optional): Path to JSON schema file for structured output
 - **sandbox** (optional): Sandbox policy (read-only, workspace-write, danger-full-access)
 - **working_directory** (optional): Directory to run Codex in
+- **verbose** (optional): Enable verbose debugging output in response (default: false)
 
 ### ask_copilot
 - **prompt** (required): The question or prompt for GitHub Copilot
@@ -131,6 +137,7 @@ The MCP server will execute the appropriate CLI command and return the results.
 - **add_dir** (optional): List of directories to add to the allowed list for file access
 - **log_level** (optional): Set the log level (error, warning, info, debug, all, default, none)
 - **no_color** (optional): Disable all color output
+- **verbose** (optional): Enable verbose debugging output in response (default: false)
 
 ### ask_claude
 - **prompt** (required): The question or prompt for Claude CLI
@@ -145,7 +152,7 @@ The MCP server will execute the appropriate CLI command and return the results.
 - **add_dir** (optional): Additional directories to allow tool access to
 - **append_system_prompt** (optional): Append a system prompt to the default system prompt
 - **debug** (optional): Enable debug mode
-- **verbose** (optional): Enable verbose mode
+- **verbose** (optional): Enable verbose debugging output in response (default: false)
 - **dangerously_skip_permissions** (optional): Bypass all permission checks (recommended only for sandboxes)
 
 ## Examples
@@ -204,6 +211,55 @@ We welcome all contributions, especially from AI coding assistants! 🤖
 - Documentation enhancements
 - Test coverage expansion
 - Security improvements
+
+## Logging and Debugging
+
+The MCP server includes comprehensive logging and debugging capabilities:
+
+### File Logging
+
+All server activity is automatically logged to `logs/ultrareview-mcp-YYYYMMDD.log` with daily rotation. Logs include:
+- Server startup and initialization
+- Tool invocations with parameters
+- Command execution details
+- Success/failure status
+- Error messages and stack traces
+
+Log levels:
+- **INFO**: General operational messages (tool calls, completions)
+- **DEBUG**: Detailed execution information (commands, parameters, output sizes)
+- **WARNING**: Non-fatal issues (command failures, unexpected conditions)
+- **ERROR**: Fatal errors (missing commands, exceptions)
+
+### Verbose Debug Mode
+
+Enable verbose debugging by passing `verbose: true` to any tool:
+
+```python
+ask_codex(
+    prompt="Review this code",
+    verbose=True  # Enable verbose debug output
+)
+```
+
+When verbose mode is enabled, responses include:
+- Full command executed
+- Working directory
+- System PATH
+- All input arguments (JSON formatted)
+- Subprocess return code
+- Output lengths (stdout/stderr)
+- Exception details and tracebacks (on errors)
+
+This is especially useful when troubleshooting connection issues or unexpected behavior from the MCP client.
+
+### Log Files
+
+Log files are stored in the `logs/` directory (ignored by git):
+- One file per day: `ultrareview-mcp-YYYYMMDD.log`
+- Automatic rotation at midnight
+- Timestamps in format: `YYYY-MM-DD HH:MM:SS`
+- Console output only for ERROR level
 
 ## Development
 

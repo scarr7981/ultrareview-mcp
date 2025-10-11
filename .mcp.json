@@ -1,0 +1,43 @@
+{
+	"mcpServers": {
+		"engmanager": {
+			"command": "/home/user/dev/engmanager-mcp/.venv/bin/python",
+			"args": ["-m", "engmanager_mcp.server"],
+			"cwd": "/home/user/dev/engmanager-mcp",
+			"env": {
+				"ENGMANAGER_DEFAULT_PROJECT": "trowel",
+				"ENGMANAGER_MCP_LOG_LEVEL": "DEBUG"
+			}
+		},
+		"ultrareview": {
+    		"command": "/home/user/dev/ultrareview-mcp/.venv/bin/python3",
+    		"args": ["/home/user/dev/ultrareview-mcp/server.py"]
+    	},
+		"cargoshipper": {
+    		"command": "uvx",
+    		"args": ["cargoshipper-mcp"]
+    	},
+		"playwright": {
+			"command": "npx",
+			"args": [
+				"@playwright/mcp@latest"
+			]
+		},
+		"memory": {
+			"command": "npx",
+			"args": ["-y", "@modelcontextprotocol/server-memory"],
+			"env": { "MEMORY_FILE_PATH": "./project-memory.json" }		  
+			},
+		"git": {
+			"command": "uvx",
+			"args": ["mcp-server-git"]
+			},
+		"sequential-thinking": {
+			"command": "npx",
+			"args": [
+				"-y",
+				"@modelcontextprotocol/server-sequential-thinking"
+				]
+			}
+	}
+}
