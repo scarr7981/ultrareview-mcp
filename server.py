@@ -61,7 +61,7 @@ async def list_tools() -> list[Tool]:
                     },
                     "model": {
                         "type": "string",
-                        "description": "Model to use (e.g., o4-mini, o3-mini). Uses CLI default if not specified"
+                        "description": "Model to use (e.g., o4-mini, o3-mini). IMPORTANT: Only specify this parameter if you have a deliberate, specific reason to override the user's CLI default model. In most cases, you should omit this parameter and let the CLI use the default. Uses CLI default if not specified."
                     },
                     "full_auto": {
                         "type": "boolean",
@@ -107,7 +107,7 @@ async def list_tools() -> list[Tool]:
                     },
                     "model": {
                         "type": "string",
-                        "description": "Model to use (claude-sonnet-4.5, claude-sonnet-4, or gpt-5). Uses CLI default if not specified"
+                        "description": "Model to use (claude-sonnet-4.5, claude-sonnet-4, or gpt-5). IMPORTANT: Only specify this parameter if you have a deliberate, specific reason to override the user's CLI default model. In most cases, you should omit this parameter and let the CLI use the default. Uses CLI default if not specified."
                     },
                     "allow_all_tools": {
                         "type": "boolean",
@@ -160,7 +160,7 @@ async def list_tools() -> list[Tool]:
                     },
                     "model": {
                         "type": "string",
-                        "description": "Model to use (e.g., 'sonnet', 'opus', or full model name like 'claude-sonnet-4-20250514'). Uses CLI default if not specified"
+                        "description": "Model to use (e.g., 'sonnet', 'opus', or full model name like 'claude-sonnet-4-20250514'). IMPORTANT: Only specify this parameter if you have a deliberate, specific reason to override the user's CLI default model. In most cases, you should omit this parameter and let the CLI use the default. Uses CLI default if not specified."
                     },
                     "fallback_model": {
                         "type": "string",
